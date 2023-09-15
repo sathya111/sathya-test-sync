@@ -6,3 +6,26 @@ jobs:
     environment: AzurePAT
     steps:
     - uses: actions/checkout@v2
+    - name: Run script file
+      env:
+        AZUREPAT: ${{secrets.AZUREPAT}}
+        AZUSERNAME: ${{secrets.AZUSERNAME}}
+        AZUSER_EMAIL: ${{secrets.AZUSER_EMAIL}}
+        AZORG: ${{secrets.AZORG}}
+
+     
+    - name: Set up Git
+      run: |
+          git config user.name "${{ secrets.AZUSERNAME }}"
+          git config user.email "${{ secrets.AZUSERNAME }}"
+    - name: push to azure 
+      run: |
+            git clone https://sathyapinreddy@dev.azure.com/sathyapinreddy/Dot-Net-Demo/_git/synctest
+            cd synctest
+            git remote add github-02 https://github.com/sathya111/sathya-test-sync.git
+            git fetch github-02
+            git push https://sathyapinreddy@dev.azure.com/sathyapinreddy/Dot-Net-Demo/_git/synctest github-02/main:main --force
+          
+
+ 
+  

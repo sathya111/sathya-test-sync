@@ -6,19 +6,18 @@ name: Infrastructure-2-REPO-SYNC
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "dev" ]
+    branches: main
+    
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  #workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: self-hosted
+    runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -32,13 +31,19 @@ jobs:
           AZUSERNAME: ${{secrets.AZUSERNAME}}
           AZUSER_EMAIL: ${{secrets.AZUSER_EMAIL}}
           AZORG: ${{secrets.AZORG}}
-          #AZURE_DEVOPS_REPO_URL: https://GTApps-ADO-Commercial@dev.azure.com/GTApps-ADO-Commercial/GTApps-ADO-Test/_git/GTApps-ADO-Test
-     # - name: push to azure 
+         
+     
+      - name: Set up Git
+        run: |
+          git config user.name "${{ secrets.AZUSERNAME }}"
+          git config user.email "${{ secrets.AZUSERNAME }}"
+      - name: push to azure 
         run: |
             git clone https://sathyapinreddy@dev.azure.com/sathyapinreddy/Dot-Net-Demo/_git/synctest
-            git remote add github-01 https://github.com/sathya111/sathya-test-sync.git
-            git fetch github-01
-            git push https://sathyapinreddy@dev.azure.com/sathyapinreddy/Dot-Net-Demo/_git/synctest github-01/main:main --force
+            cd synctest
+            git remote add github-02 https://github.com/sathya111/sathya-test-sync.git
+            git fetch github-02
+            git push https://sathyapinreddy@dev.azure.com/sathyapinreddy/Dot-Net-Demo/_git/synctest github-02/main:main --force
           
 
  
